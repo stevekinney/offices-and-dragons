@@ -1,5 +1,7 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 
+import Api from '../lib/api';
+
 import { REQUEST_NEW_FRIEND } from '../constants';
 import { addFriendToList } from '../actions/index';
 
@@ -13,11 +15,7 @@ export function* fetchUserFromApi() {
 }
 
 export function* makeApiRequest() {
-  const friend = yield call(() =>
-    fetch('https://api.randomuser.me/')
-      .then(response => response.json())
-      .then(response => response.results[0]),
-  );
-  console.log({ friend });
+  const friend = yield call(Api.requestNewFriend);
+  console.log(friend);
   yield put(addFriendToList(friend));
 }

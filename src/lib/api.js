@@ -1,5 +1,7 @@
 import localforage from 'localforage';
 
+import generateStats from './generate-stats';
+
 window.localforage = localforage;
 
 const getAll = async () => {
@@ -9,9 +11,12 @@ const getAll = async () => {
 };
 
 export default {
-  async add(item) {
+  async requestNewFriend() {
     const items = await getAll();
-    const newItem = { ...item, id: Date.now() };
+    const newItem = await fetch('https://api.randomuser.me/')
+      .then(response => response.json())
+      .then(response => response.results[0])
+      .then(generateStats);
     localforage.setItem('items', [...items, newItem]);
     return newItem;
   },
