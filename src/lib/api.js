@@ -5,20 +5,20 @@ import generateStats from './generate-stats';
 window.localforage = localforage;
 
 const getAll = async () => {
-  const items = await localforage.getItem('items');
-  if (!items) await localforage.setItem('items', []);
-  return items || [];
+  const friends = await localforage.getItem('friends');
+  if (!friends) await localforage.setItem('friends', []);
+  return friends || [];
 };
 
 export default {
   async requestNewFriend() {
-    const items = await getAll();
-    const newItem = await fetch('https://api.randomuser.me/')
+    const friends = await getAll();
+    const newFriend = await fetch('https://api.randomuser.me/')
       .then(response => response.json())
       .then(response => response.results[0])
       .then(generateStats);
-    localforage.setItem('items', [...items, newItem]);
-    return newItem;
+    localforage.setItem('friends', [...friends, newFriend]);
+    return newFriend;
   },
 
   async getAll() {
@@ -26,31 +26,18 @@ export default {
   },
 
   async delete({ id }) {
-    const items = await getAll();
-    localforage.setItem('items', items.filter(item => item.id !== id));
+    const friends = await getAll();
+    localforage.setItem('friends', friends.filter(friend => friend.id !== id));
   },
 
-  async update(updatedItem) {
-    const items = await getAll();
+  async update(updatedFriend) {
+    const friends = await getAll();
     localforage.setItem(
-      'items',
-      items.map(item => {
-        if (item.id === updatedItem.id) return { ...item, ...updatedItem };
-        return item;
+      'friends',
+      friends.map(friend => {
+        if (friend.id === updatedFriend.id) return { ...friend, ...updatedFriend };
+        return friend;
       }),
     );
-  },
-
-  async markAllAsUnpacked() {
-    const items = await getAll();
-    localforage.setItem(
-      'items',
-      items.map(item => ({ ...item, packed: false })),
-    );
-  },
-
-  async deleteUnpackedItems() {
-    const items = await getAll();
-    localforage.setItem('items', items.filter(({packed}) => packed))
-  },
+  }
 };

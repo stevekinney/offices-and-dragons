@@ -6,7 +6,6 @@ import { REQUEST_NEW_FRIEND } from '../constants';
 import { addFriendToList } from '../actions/index';
 
 export default function* rootSaga() {
-  console.log('I am working!');
   yield all([fetchUserFromApi()]);
 }
 
@@ -16,6 +15,6 @@ export function* fetchUserFromApi() {
 
 export function* makeApiRequest() {
   const friend = yield call(Api.requestNewFriend);
-  console.log(friend);
+
   yield put(addFriendToList(friend));
 }
