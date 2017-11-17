@@ -14,8 +14,12 @@ export default class FriendProfile extends Component {
             Level {level} {role}
           </p>
           <ul>
-            <li><strong>HP</strong>: {hp}</li>
-            <li><strong>Mana</strong>: {mana}</li>
+            <li>
+              <strong>HP</strong>: {hp}
+            </li>
+            <li>
+              <strong>Mana</strong>: {mana}
+            </li>
           </ul>
         </div>
       </article>
